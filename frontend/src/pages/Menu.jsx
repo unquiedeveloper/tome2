@@ -1,403 +1,160 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function Menu() {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+
+  useEffect(() => {
+    // Fetch all products from the API
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/api/v1/product/getall');
+        setProducts(response.data.products);
+        setFilteredProducts(response.data.products);
+
+        // Extract unique categories from products
+        const uniqueCategories = [...new Set(response.data.products.map(product => product.category))];
+        setCategories(uniqueCategories);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Filter products based on selected category and price range
+  useEffect(() => {
+    const filtered = products.filter(product => {
+      const withinCategory = selectedCategory ? product.category === selectedCategory : true;
+      const withinPriceRange = product.price >= priceRange.min && product.price <= priceRange.max;
+      return withinCategory && withinPriceRange;
+    });
+    setFilteredProducts(filtered);
+  }, [selectedCategory, priceRange, products]);
+
+  // Function to handle adding a product to the cart
+  const addToCart = async (product) => {
+    const token = localStorage.getItem("token"); // Retrieve token from local storage
+
+    if (!token) {
+      alert("Please log in to add items to the cart.");
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:4000/api/v1/cart/add-to-cart', {
+        productId: product._id,
+        quantity: 1,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`  // Send the token in the Authorization header
+        }
+      });
+
+      if (response.status === 200) {
+        alert('Added to cart successfully!');
+      } else {
+        console.error('Failed to add to cart:', response.data.message);
+        alert('Failed to add to cart.');
+      }
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Failed to add to cart.');
+    }
+  };
+
   return (
-    <>
-        <div>
-          {/*
-  Heads up! 👋
+    <section>
+      <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <header>
+          <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">Menu</h2>
+          <p className="mt-4 max-w-md text-gray-500">
+            Explore our menu. Filter by category or price to find your favorite dish!
+          </p>
+        </header>
 
-  This component comes with some `rtl` classes. Please remove them if they are not needed in your project.
-
-  Plugins:
-    - @tailwindcss/forms
-*/}
-
-<section>
-  <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-    <header>
-      <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">Menu</h2>
-
-      <p className="mt-4 max-w-md text-gray-500">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque praesentium cumque iure
-        dicta incidunt est ipsam, officia dolor fugit natus?
-      </p>
-    </header>
-
-    <div className="mt-8 block lg:hidden">
-      <button
-        className="flex cursor-pointer items-center gap-2 border-b border-gray-400 pb-1 text-gray-900 transition hover:border-gray-600"
-      >
-        <span className="text-sm font-medium"> Filters & Sorting </span>
-
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="size-4 rtl:rotate-180"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-        </svg>
-      </button>
-    </div>
-
-    <div className="mt-4 lg:mt-8 lg:grid lg:grid-cols-4 lg:items-start lg:gap-8">
-      <div className="hidden space-y-4 lg:block">
-        <div>
-          <label htmlFor="SortBy" className="block text-xs font-medium text-gray-700"> Sort By </label>
-
-          <select id="SortBy" className="mt-1 rounded border-gray-300 text-sm">
-            <option>Sort By</option>
-            <option value="Title, DESC">Title, DESC</option>
-            <option value="Title, ASC">Title, ASC</option>
-            <option value="Price, DESC">Price, DESC</option>
-            <option value="Price, ASC">Price, ASC</option>
-          </select>
-        </div>
-
-        <div>
-          <p className="block text-xs font-medium text-gray-700">Filters</p>
-
-          <div className="mt-1 space-y-2">
-            <details
-              className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
-            >
-              <summary
-                className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition"
+        <div className="mt-8 lg:grid lg:grid-cols-4 lg:items-start lg:gap-8">
+          <div className="hidden lg:block p-4 border border-gray-300 rounded-lg">
+            {/* Category Filter */}
+            <div className="mb-6">
+              <label className="block text-xs font-medium text-gray-700 mb-2">Category</label>
+              <select
+                className="w-full rounded border-gray-300 text-sm"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
               >
-                <span className="text-sm font-medium"> Availability </span>
+                <option value="">All Categories</option>
+                {categories.map((category, index) => (
+                  <option key={index} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-                <span className="transition group-open:-rotate-180">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="h-4 w-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                    />
-                  </svg>
-                </span>
-              </summary>
-
-              <div className="border-t border-gray-200 bg-white">
-                <header className="flex items-center justify-between p-4">
-                  <span className="text-sm text-gray-700"> 0 Selected </span>
-
-                  <button type="button" className="text-sm text-gray-900 underline underline-offset-4">
-                    Reset
-                  </button>
-                </header>
-
-                <ul className="space-y-1 border-t border-gray-200 p-4">
-                  <li>
-                    <label htmlFor="FilterInStock" className="inline-flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="FilterInStock"
-                        className="size-5 rounded border-gray-300"
-                      />
-
-                      <span className="text-sm font-medium text-gray-700"> In Stock (5+) </span>
-                    </label>
-                  </li>
-
-                  <li>
-                    <label htmlFor="FilterPreOrder" className="inline-flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="FilterPreOrder"
-                        className="size-5 rounded border-gray-300"
-                      />
-
-                      <span className="text-sm font-medium text-gray-700"> Pre Order (3+) </span>
-                    </label>
-                  </li>
-
-                  <li>
-                    <label htmlFor="FilterOutOfStock" className="inline-flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="FilterOutOfStock"
-                        className="size-5 rounded border-gray-300"
-                      />
-
-                      <span className="text-sm font-medium text-gray-700"> Out of Stock (10+) </span>
-                    </label>
-                  </li>
-                </ul>
+            {/* Price Filter */}
+            <div className="mb-6">
+              <label className="block text-xs font-medium text-gray-700 mb-2">Price Range</label>
+              <div className="flex justify-between gap-4">
+                <input
+                  type="number"
+                  className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  placeholder="From"
+                  value={priceRange.min}
+                  onChange={(e) => setPriceRange({ ...priceRange, min: e.target.value })}
+                />
+                <input
+                  type="number"
+                  className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  placeholder="To"
+                  value={priceRange.max}
+                  onChange={(e) => setPriceRange({ ...priceRange, max: e.target.value })}
+                />
               </div>
-            </details>
+            </div>
+          </div>
 
-            <details
-              className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
-            >
-              <summary
-                className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition"
-              >
-                <span className="text-sm font-medium"> Price </span>
-
-                <span className="transition group-open:-rotate-180">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="h-4 w-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+          <div className="lg:col-span-3">
+            <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredProducts.map((product) => (
+                <li key={product._id} className="bg-white shadow rounded-lg overflow-hidden">
+                  <a href="#" className="block overflow-hidden">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="h-[200px] w-full object-cover transition duration-500 group-hover:scale-105"
                     />
-                  </svg>
-                </span>
-              </summary>
-
-              <div className="border-t border-gray-200 bg-white">
-                <header className="flex items-center justify-between p-4">
-                  <span className="text-sm text-gray-700"> The highest price is $600 </span>
-
-                  <button type="button" className="text-sm text-gray-900 underline underline-offset-4">
-                    Reset
-                  </button>
-                </header>
-
-                <div className="border-t border-gray-200 p-4">
-                  <div className="flex justify-between gap-4">
-                    <label htmlFor="FilterPriceFrom" className="flex items-center gap-2">
-                      <span className="text-sm text-gray-600">$</span>
-
-                      <input
-                        type="number"
-                        id="FilterPriceFrom"
-                        placeholder="From"
-                        className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-                      />
-                    </label>
-
-                    <label htmlFor="FilterPriceTo" className="flex items-center gap-2">
-                      <span className="text-sm text-gray-600">$</span>
-
-                      <input
-                        type="number"
-                        id="FilterPriceTo"
-                        placeholder="To"
-                        className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-                      />
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </details>
-
-            <details
-              className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
-            >
-              <summary
-                className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition"
-              >
-                <span className="text-sm font-medium"> Colors </span>
-
-                <span className="transition group-open:-rotate-180">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="h-4 w-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                    />
-                  </svg>
-                </span>
-              </summary>
-
-              <div className="border-t border-gray-200 bg-white">
-                <header className="flex items-center justify-between p-4">
-                  <span className="text-sm text-gray-700"> 0 Selected </span>
-
-                  <button type="button" className="text-sm text-gray-900 underline underline-offset-4">
-                    Reset
-                  </button>
-                </header>
-
-                <ul className="space-y-1 border-t border-gray-200 p-4">
-                  <li>
-                    <label htmlFor="FilterRed" className="inline-flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="FilterRed"
-                        className="size-5 rounded border-gray-300"
-                      />
-
-                      <span className="text-sm font-medium text-gray-700"> Red </span>
-                    </label>
-                  </li>
-
-                  <li>
-                    <label htmlFor="FilterBlue" className="inline-flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="FilterBlue"
-                        className="size-5 rounded border-gray-300"
-                      />
-
-                      <span className="text-sm font-medium text-gray-700"> Blue </span>
-                    </label>
-                  </li>
-
-                  <li>
-                    <label htmlFor="FilterGreen" className="inline-flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="FilterGreen"
-                        className="size-5 rounded border-gray-300"
-                      />
-
-                      <span className="text-sm font-medium text-gray-700"> Green </span>
-                    </label>
-                  </li>
-
-                  <li>
-                    <label htmlFor="FilterOrange" className="inline-flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="FilterOrange"
-                        className="size-5 rounded border-gray-300"
-                      />
-
-                      <span className="text-sm font-medium text-gray-700"> Orange </span>
-                    </label>
-                  </li>
-
-                  <li>
-                    <label htmlFor="FilterPurple" className="inline-flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="FilterPurple"
-                        className="size-5 rounded border-gray-300"
-                      />
-
-                      <span className="text-sm font-medium text-gray-700"> Purple </span>
-                    </label>
-                  </li>
-
-                  <li>
-                    <label htmlFor="FilterTeal" className="inline-flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="FilterTeal"
-                        className="size-5 rounded border-gray-300"
-                      />
-
-                      <span className="text-sm font-medium text-gray-700"> Teal </span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-            </details>
+                    <div className="p-4">
+                      <h3 className="text-sm text-gray-700 font-semibold group-hover:underline">
+                        {product.name}
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-500">
+                        {product.description}
+                      </p>
+                      <p className="mt-2 text-lg font-bold text-gray-900">
+                        ₹{product.price}
+                      </p>
+                      <button
+                        className="mt-4 w-full rounded bg-[#da9858] px-6 py-2 text-sm font-medium text-white hover:bg-[#e89571]"
+                        onClick={() => addToCart(product)}
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
-
-      <div className="lg:col-span-3">
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <li>
-            <a href="#" className="group block overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                alt=""
-                className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-              />
-
-              <div className="relative bg-white pt-3">
-                <h3
-                  className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4"
-                >
-                  Basic Tee
-                </h3>
-
-                <p className="mt-2">
-                  <span className="sr-only"> Regular Price </span>
-
-                  <span className="tracking-wider text-gray-900"> £24.00 GBP </span>
-                </p>
-              </div>
-            </a>
-          </li>
-
-          <li>
-            <a href="#" className="group block overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                alt=""
-                className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-              />
-
-              <div className="relative bg-white pt-3">
-                <h3
-                  className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4"
-                >
-                  Basic Tee
-                </h3>
-
-                <p className="mt-2">
-                  <span className="sr-only"> Regular Price </span>
-
-                  <span className="tracking-wider text-gray-900"> £24.00 GBP </span>
-                </p>
-              </div>
-            </a>
-          </li>
-
-          <li>
-            <a href="#" className="group block overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                alt=""
-                className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-              />
-
-              <div className="relative bg-white pt-3">
-                <h3
-                  className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4"
-                >
-                  Basic Tee
-                </h3>
-
-                <p className="mt-2">
-                  <span className="sr-only"> Regular Price </span>
-
-                  <span className="tracking-wider text-gray-900"> £24.00 GBP </span>
-                </p>
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-        </div>
-
-
-
-    </>
-
-  )
+    </section>
+  );
 }
 
-export default Menu
+export default Menu;

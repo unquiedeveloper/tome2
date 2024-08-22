@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../assets/logo.png";
+import logo from "../assets/TO-ME.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,30 +9,32 @@ const Navbar = () => {
       <div className="navbar bg-base-100 h-16"> {/* Set a fixed height for the navbar */}
         {/* Left Section with Links (Hidden on Small Screens) */}
         <div className="flex-1 mx-15 hidden lg:flex items-center">
-          <a className="btn btn-ghost text-lg" href="/">Home</a> {/* Reduced font size */}
-          <a className="btn btn-ghost text-lg" href="/menu">Menu</a> {/* Reduced font size */}
-          <a className="btn btn-ghost text-lg" href="/about">About</a> {/* Reduced font size */}
+          <a className="btn btn-ghost  hover:text-[#da9858] text-lg" href="/">Home</a> {/* Reduced font size */}
+          <a className="btn btn-ghost hover:text-[#da9858] text-lg" href="/menu">Menu</a> {/* Reduced font size */}
+          <a className="btn btn-ghost hover:text-[#da9858] text-lg" href="/about">About</a> {/* Reduced font size */}
         </div>
 
         {/* Center Section */}
         <div className="flex-1 text-center">
-          <a href="/" className="flex justify-center items-center ml-20">
+          <a href="/" className="flex justify-center items-center ml-10">
             <img
               src={logo}
               alt="Logo"
-              className="w-[120px] h-auto" // Reduced logo width to fit the smaller navbar height
+              className="w-[190px] h-auto" // Reduced logo width to fit the smaller navbar height
             />
           </a>
         </div>
 
         {/* Right Section */}
         <div className="flex-none hidden lg:flex items-center">
-          <a className="btn btn-ghost text-lg" href="/contact">Contact</a> {/* Reduced font size */}
-          <a className="btn btn-ghost text-lg" href="/login">Login</a> {/* Reduced font size */}
+          <a className="btn btn-ghost hover:text-[#da9858] text-lg" href="/contact">Contact</a> {/* Reduced font size */}
+          <a className="btn btn-ghost hover:text-[#da9858] text-lg" href="/login">Login</a> {/* Reduced font size */}
           <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
               <div className="indicator">
-                <svg
+              <a href="/cart" >
+
+              <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"
                   fill="none"
@@ -44,10 +46,13 @@ const Navbar = () => {
                     strokeWidth="2"
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
-                <span className="badge badge-sm indicator-item">8</span>
+                           
+               </a>
+
+                
               </div>
             </div>
-            <div
+            {/* <div
               tabIndex={0}
               className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
               <div className="card-body">
@@ -57,7 +62,7 @@ const Navbar = () => {
                   <button className="btn btn-primary btn-block">View cart</button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

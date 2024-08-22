@@ -13,7 +13,7 @@ function Home() {
   useEffect(() => {
     // Fetch all products when the component mounts
     axios
-      .get("http://localhost:4000/api/v1/product/getall") // Adjust the URL to your actual endpoint
+      .get("https://tasteofmiddleeast.onrender.com/api/v1/product/getall") // Adjust the URL to your actual endpoint
       .then((response) => {
         const fetchedProducts = response.data.products;
 
@@ -58,7 +58,7 @@ function Home() {
         />
       </div>
 
-      <div className="p-4">
+      <div className="p-4 ">
         {/* Main Content */}
         <div className="flex h-screen p-8">
           {/* Left Side */}
@@ -75,7 +75,7 @@ function Home() {
               <div className="absolute inset-0 bg-black opacity-30"></div>
               <div className="absolute bottom-4 left-4">
                 <span
-                  className="bg-white text-black text-sm font-bold p-2 px-4 border-2 border-black border-dashed"
+                  className="bg-[#da9858] text-white  text-sm font-bold p-2 px-4 border-2 border-white border-dashed"
                   style={{ transform: "rotate(12deg)" }}
                 >
                   Shawarma Rolls
@@ -99,7 +99,7 @@ function Home() {
                 <div className="absolute inset-0 bg-black opacity-30"></div>
                 <div className="absolute bottom-4 left-4">
                   <span
-                    className="bg-white text-black text-sm font-bold p-2 px-4 border-2 border-black border-dashed"
+                    className="bg-[#da9858] text-white  text-sm font-bold p-2 px-4 border-2 border-white  border-dashed"
                     style={{ transform: "rotate(2deg)" }}
                   >
                     Platters
@@ -135,7 +135,7 @@ function Home() {
               <div className="absolute inset-0 bg-black opacity-30"></div>
               <div className="absolute bottom-4 left-4">
                 <span
-                  className="bg-white text-black text-sm font-bold p-2 px-4 border-2 border-black border-dashed"
+                  className="bg-[#da9858] text-white  text-sm font-bold p-2 px-4 border-2 border-white  border-dashed"
                   style={{ transform: "rotate(100deg)" }}
                 >
                   Chicken Mandi
@@ -147,7 +147,7 @@ function Home() {
       </div>
 
       {/* About Section */}
-      <div className="p-4 flex gap-2 mt-40">
+      <div className="p-4 flex gap-2 mt-40 ">
         <div className="w-[50%] flex pl-12">
           <div className="mt-8">
             <h1 className="text-6xl font-semibold ml-2">About</h1>
@@ -165,7 +165,10 @@ function Home() {
               to rich machboos and fragrant kebabs, every bite is a taste of
               tradition and authenticity.
             </p>
-            <button className="border-2 border-black px-4 py-2 rounded-full mt-8">
+            <a  href="/about"   >
+
+            </a>
+            <button className="border-2 bg-[#da9858] text-white border-[#da9858] px-4 py-2 rounded-full mt-8">
               Learn More
             </button>
           </div>
@@ -183,14 +186,14 @@ function Home() {
         </div>
       </div>
 
-      {/* Menu Section */}
-      <div className="mt-40 px-10 pb-10 border-b-2 border-dashed border-gray-500">
-  <h1 className="text-6xl font-semibold mb-8">Menu</h1>
-  <div className="text-xl mb-12">
+{/* Menu Section */}
+<div className="mt-40 mb-40 px-6  border-gray-500">
+  <h1 className="text-4xl font-semibold mb-6 ">Menu</h1>
+  <div className="text-lg mb-8">
     {Object.keys(categorizedProducts).map((category, index, array) => (
       <span
         key={category}
-        className={`cursor-pointer mx-4 ${selectedCategory === category ? "text-yellow-600" : ""}`}
+        className={`cursor-pointer mx-3 ${selectedCategory === category ? "text-yellow-600" : ""}`}
         onClick={() => handleCategoryClick(category)}
       >
         {category}
@@ -198,50 +201,47 @@ function Home() {
       </span>
     ))}
     <span
-      className={`cursor-pointer mx-4 ${selectedCategory === "All" ? "text-yellow-600" : ""}`}
+      className={`cursor-pointer ${selectedCategory === "All" ? "text-yellow-600" : ""}`}
       onClick={() => handleCategoryClick("All")}
     >
       All
     </span>
   </div>
-  <div className="grid grid-cols-2 gap-8">
+  <div className="grid grid-cols-2 gap-6">
     <div className="col-span-1">
       <img
         src="https://images.pexels.com/photos/6546034/pexels-photo-6546034.jpeg?auto=compress&cs=tinysrgb&w=600"
         alt="Dish"
-        className="w-full h-[70%] object-cover"
+        className="w-full h-[40vh] object-cover"
       />
     </div>
     <div className="col-span-1">
       {getProductsForCategory().slice(0, 3).map((product) => (
         <div
           key={product._id}
-          className="mb-4 border-dashed border-b-2 border-black pb-4"
+          className="mb-3 border-dashed border-b-2 border-black pb-3"
         >
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-lg font-semibold">{product.name}</h2>
-              <p className="text-lg mt-1">{product.description}</p>
+              <h2 className="text-base font-semibold">{product.name}</h2>
+              <p className="text-base mt-1">{product.description}</p>
             </div>
             <div>
-              <p className="text-xl">₹{product.price}</p>
+              <p className="text-lg">₹{product.price}</p>
             </div>
           </div>
-
         </div>
-        
       ))}
       <div className="text-right"> 
-          <a href="/menu" className="hover:text-yellow-600 ">see more</a>
-          
-          </div>
+        <a href="/menu" className="hover:text-yellow-600">see more</a>
+      </div>
     </div>
   </div>
 </div>
 
-      {/* Special Dishes Section */}
-      {/* <section>
-        <div className="mx-auto max-w-screen-xl px-4 py-2 -mt-32 sm:px-6 sm:py-12 lg:px-8">
+      {/* Special Dishes Section  */}
+  
+        {/* <div className="mx-auto max-w-screen-xl px-4 py-2 -mt-32 sm:px-6 sm:py-12 lg:px-8">
           <header>
             <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">
               Speical Dishes{" "}
@@ -349,8 +349,8 @@ function Home() {
               </a>
             </li>
           </ul>
-        </div>
-      </section> */}
+        </div> */}
+ 
     </>
   );
 }
