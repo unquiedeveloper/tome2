@@ -32,13 +32,13 @@ function Contact() {
               </div>
               <div className="border-t border-gray-200 px-6 py-4">
                 <h3 className="text-lg font-medium text-gray-900">Hours</h3>
-                <p className="mt-1 text-gray-600">Monday - Sunday: 2am - 12pm</p>
+                <p className="mt-1 text-gray-600">Monday - Sunday: 2pm - 12am</p>
                 {/* <p className="mt-1 text-gray-600">Saturday: 10am - 4pm</p>
                 <p className="mt-1 text-gray-600">Sunday: Closed</p> */}
               </div>
               <div className="border-t border-gray-200 px-6 py-4">
                 <h3 className="text-lg font-medium text-gray-900">Contact</h3>
-                <a href='mail to:tasteofmiddleeast07@gmail.com'>
+                <a href='mailto:tasteofmiddleeast07@gmail.com'>
 
                 <p className="mt-1 text-gray-600">Email: tasteofmiddleeast07@gmail.com</p>
                 </a>

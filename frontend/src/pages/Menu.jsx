@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function Menu() {
   const [products, setProducts] = useState([]);
@@ -8,16 +9,28 @@ function Menu() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
 
+  const navigate = useNavigate(); // Initialize useNavigate
+
   useEffect(() => {
     // Fetch all products from the API
     const fetchProducts = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/v1/product/getall');
-        setProducts(response.data.products);
-        setFilteredProducts(response.data.products);
+        const fetchedProducts = response.data.products;
+
+        // Standardize category names (e.g., for "Kebabs")
+        const standardizedProducts = fetchedProducts.map(product => {
+          if (product.category.toLowerCase().includes('kebab')) {
+            product.category = 'Kebabs';
+          }
+          return product;
+        });
+
+        setProducts(standardizedProducts);
+        setFilteredProducts(standardizedProducts);
 
         // Extract unique categories from products
-        const uniqueCategories = [...new Set(response.data.products.map(product => product.category))];
+        const uniqueCategories = [...new Set(standardizedProducts.map(product => product.category))];
         setCategories(uniqueCategories);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -43,6 +56,7 @@ function Menu() {
 
     if (!token) {
       alert("Please log in to add items to the cart.");
+      navigate("/login"); // Redirect to the login page
       return;
     }
 

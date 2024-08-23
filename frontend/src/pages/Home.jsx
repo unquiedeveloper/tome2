@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react"; // Import useState and useEffect
 import axios from "axios";
 import v1 from "../assets/2.jpg";
-import video from "../assets/videomain.mp4";
+import video from "../assets/headervideo.mp4";
 import he1 from "../assets/he1.webp";
 import he2 from "../assets/he2.webp"
-
+import banner from "../assets/banner.jpg"
+import Slider from "react-slick";
 function Home() {
   const [products, setProducts] = useState([]);
   const [categorizedProducts, setCategorizedProducts] = useState({});
@@ -13,7 +14,7 @@ function Home() {
   useEffect(() => {
     // Fetch all products when the component mounts
     axios
-      .get("https://tasteofmiddleeast.onrender.com/api/v1/product/getall") // Adjust the URL to your actual endpoint
+      .get("https://tome2.onrender.com/api/v1/product/getall") // Adjust the URL to your actual endpoint
       .then((response) => {
         const fetchedProducts = response.data.products;
 
@@ -45,18 +46,46 @@ function Home() {
     }
     return categorizedProducts[selectedCategory] || [];
   };
+
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   return (
     <>
       {/* video */}
-      <div className="relative h-screen w-full overflow-hidden">
-        <video
-          src={video}
-          autoPlay
-          muted
-          loop
-          className="absolute top-0 left-0 w-full h-full object-cover"
-        />
-      </div>
+      {/* Slider Section */}
+      <Slider {...sliderSettings} className="h-screen">
+        {/* Video Slide */}
+        <div className="relative h-screen w-full overflow-hidden">
+          <video
+            src={video}
+            autoPlay
+            muted
+            loop
+            className="absolute top-0 left-0 w-full h-full object-cover"
+          />
+        </div>
+        {/* Banner Slide */}
+        <div className="relative h-screen w-full">
+          <img
+            src={banner}
+            alt="Banner"
+            className="absolute top-0 left-0 w-full h-full object-cover"
+          />
+          {/* <div className="absolute inset-0 bg-black opacity-30"></div> */}
+          <div className="absolute bottom-10 left-10 text-white">
+            {/* <h1 className="text-4xl font-bold">Welcome to Our Restaurant</h1>
+            <p className="text-lg mt-4">
+              Experience the taste of authentic Middle Eastern cuisine.
+            </p> */}
+          </div>
+        </div>
+      </Slider>
 
       <div className="p-4 ">
         {/* Main Content */}
@@ -174,14 +203,14 @@ function Home() {
           </div>
         </div>
         <div className="w-[50%] flex gap-5">
-          <div className="w-[50%] -mt-12">
+          <div className="w-[50%] pt-4 ">
             <img
-              src="https://images.pexels.com/photos/5718129/pexels-photo-5718129.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              src="https://res.cloudinary.com/di0egnojl/image/upload/v1723787793/tasteofmiddleeast/h9s9ujqu6oxmi5hjgrtr.jpg"
               alt="About Image 1"
             />
           </div>
-          <div className="w-[50%]">
-            <img src={v1} alt="About Image 2" />
+          <div className="w-[50%]  pt-20">
+            <img src="https://res.cloudinary.com/di0egnojl/image/upload/v1723787785/tasteofmiddleeast/pohkuo9zbbsruwrbg507.jpg" alt="About Image 2" />
           </div>
         </div>
       </div>

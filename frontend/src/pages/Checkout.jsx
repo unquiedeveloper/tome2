@@ -33,7 +33,7 @@ function Checkout() {
     }
 
     try {
-      const response = await axios.get('http://localhost:4000/api/v1/cart/cart-items', {
+      const response = await axios.get('https://tome2.onrender.com/api/v1/cart/cart-items', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -77,29 +77,48 @@ function Checkout() {
   };
 
   const handlePlaceOrder = async () => {
+    const token = localStorage.getItem("token");
+  
+    if (!token) {
+      alert("Please log in to place an order.");
+      return;
+    }
+  
     try {
-      const userId = 'your-user-id'; // Replace with actual user ID
+      const products = cartItems.map(item => ({
+        productId: item.productId._id,  // Ensure this matches your schema
+        quantity: item.quantity,
+        price: item.productId.price // Include price for each product
+      }));
+  
       const orderData = {
-        userId,
         email: address.email,
-        name: `${address.firstName} ${address.lastName}`,
-        phoneNo: address.phone,
-        addressLine1: address.addressLine1,
-        addressLine2: address.addressLine2,
-        city: address.city,
-        postalCode: address.zip,
-        paymentMethod,
-        cartItems,
-        subtotal,
-        VAT,
-        discount,
-        total,
+        products: products,
+        amount: total,
+        address: {
+          userId: 'your-user-id', // Replace with actual user ID
+          email: address.email,
+          name: `${address.firstName} ${address.lastName}`,
+          phoneNo: address.phone,
+          addressLine1: address.addressLine1,
+          addressLine2: address.addressLine2,
+          city: address.city,
+          state: 'State', // Replace with actual state value
+          country: 'Country', // Replace with actual country value
+          postalCode: address.zip,
+        },
+        paymentMethod: paymentMethod,
       };
-
-      await axios.post('http://localhost:4000/api/v1/order/checkout', orderData);
+  
+      const response = await axios.post('http://localhost:4000/api/v1/order/checkout', orderData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
       alert('Order placed successfully');
     } catch (error) {
-      console.error('Error placing order:', error);
+      console.error('Error placing order:', error.response?.data || error.message);
       alert('Failed to place order');
     }
   };
@@ -113,83 +132,84 @@ function Checkout() {
           <h2 className="text-2xl font-bold text-gray-800">Billing Details</h2>
           <form className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* Form Fields */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">First Name</label>
+            <div className="sm:col-span-2">
+              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
               <input
                 type="text"
+                id="firstName"
                 value={address.firstName}
                 onChange={(e) => setAddress({ ...address, firstName: e.target.value })}
-                required
-                className="mt-1 px-2 py-3 pl-2 block w-full border-gray-300 rounded-md shadow-sm"
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Last Name</label>
+            <div className="sm:col-span-2">
+              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
               <input
                 type="text"
+                id="lastName"
                 value={address.lastName}
                 onChange={(e) => setAddress({ ...address, lastName: e.target.value })}
-                required
-                className="mt-1 px-2 py-3 pl-2 block w-full border-gray-300 rounded-md shadow-sm"
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
               />
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
               <input
                 type="email"
+                id="email"
                 value={address.email}
                 onChange={(e) => setAddress({ ...address, email: e.target.value })}
-                required
-                className="mt-1 px-2 py-3 pl-2 block w-full border-gray-300 rounded-md shadow-sm"
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700">Address</label>
-              <input
-                type="text"
-                value={address.addressLine1}
-                onChange={(e) => setAddress({ ...address, addressLine1: e.target.value })}
-                required
-                className="mt-1 px-2 py-3 pl-2 block w-full border-gray-300 rounded-md shadow-sm"
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700">Address Line 2</label>
-              <input
-                type="text"
-                value={address.addressLine2}
-                onChange={(e) => setAddress({ ...address, addressLine2: e.target.value })}
-                className="mt-1 px-2 py-3 pl-2 block w-full border-gray-300 rounded-md shadow-sm"
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">City/Town</label>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
               <input
                 type="text"
-                value={address.city}
-                onChange={(e) => setAddress({ ...address, city: e.target.value })}
-                required
-                className="mt-1 px-2 py-3 pl-2 block w-full border-gray-300 rounded-md shadow-sm"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">ZIP</label>
-              <input
-                type="text"
-                value={address.zip}
-                onChange={(e) => setAddress({ ...address, zip: e.target.value })}
-                required
-                className="mt-1 px-2 py-3 pl-2 block w-full border-gray-300 rounded-md shadow-sm"
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700">Phone</label>
-              <input
-                type="tel"
+                id="phone"
                 value={address.phone}
                 onChange={(e) => setAddress({ ...address, phone: e.target.value })}
-                required
-                className="mt-1 px-2 py-3 pl-2 block w-full border-gray-300 rounded-md shadow-sm"
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="addressLine1" className="block text-sm font-medium text-gray-700">Address Line 1</label>
+              <input
+                type="text"
+                id="addressLine1"
+                value={address.addressLine1}
+                onChange={(e) => setAddress({ ...address, addressLine1: e.target.value })}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="addressLine2" className="block text-sm font-medium text-gray-700">Address Line 2</label>
+              <input
+                type="text"
+                id="addressLine2"
+                value={address.addressLine2}
+                onChange={(e) => setAddress({ ...address, addressLine2: e.target.value })}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="city" className="block text-sm font-medium text-gray-700">City</label>
+              <input
+                type="text"
+                id="city"
+                value={address.city}
+                onChange={(e) => setAddress({ ...address, city: e.target.value })}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="zip" className="block text-sm font-medium text-gray-700">ZIP Code</label>
+              <input
+                type="text"
+                id="zip"
+                value={address.zip}
+                onChange={(e) => setAddress({ ...address, zip: e.target.value })}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
               />
             </div>
           </form>
@@ -210,82 +230,42 @@ function Checkout() {
               </thead>
               <tbody>
                 {cartItems.map((item) => (
-                  <tr key={item._id} className="text-sm text-gray-700">
-                    <td className="py-2 flex items-center space-x-4">
-                      <img
-                        src={item.productId.image || 'placeholder.jpg'}
-                        alt={item.productId.name}
-                        className="h-16 w-16 rounded object-cover"
-                      />
-                      <span>{item.productId.name}</span>
-                    </td>
-                    <td className="py-2">₹{item.productId.price.toFixed(2)}</td>
+                  <tr key={item.productId._id}>
+                    <td className="py-2">{item.productId.name}</td>
+                    <td className="py-2">${item.productId.price.toFixed(2)}</td>
                     <td className="py-2">{item.quantity}</td>
-                    <td className="py-2">₹{(item.productId.price * item.quantity).toFixed(2)}</td>
+                    <td className="py-2">${(item.productId.price * item.quantity).toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <div className="mt-4">
-              <div className="flex justify-between text-sm font-medium text-gray-800">
-                <span>Subtotal</span>
-                <span>₹{subtotal.toFixed(2)}</span>
+              <div className="flex justify-between py-2">
+                <span className="text-sm font-medium text-gray-700">Subtotal:</span>
+                <span className="text-sm font-medium text-gray-900">${subtotal.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-sm font-medium text-gray-800">
-                <span>VAT (10%)</span>
-                <span>₹{VAT.toFixed(2)}</span>
+              <div className="flex justify-between py-2">
+                <span className="text-sm font-medium text-gray-700">VAT (10%):</span>
+                <span className="text-sm font-medium text-gray-900">${VAT.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-sm font-medium text-gray-800">
-                <span>Discount</span>
-                <span>₹{discount.toFixed(2)}</span>
+              <div className="flex justify-between py-2">
+                <span className="text-sm font-medium text-gray-700">Discount:</span>
+                <span className="text-sm font-medium text-gray-900">-${discount.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-lg font-bold text-gray-900 mt-4">
-                <span>Total</span>
-                <span>₹{total.toFixed(2)}</span>
+              <div className="border-t border-gray-200 mt-4 pt-4">
+                <div className="flex justify-between py-2">
+                  <span className="text-lg font-bold text-gray-900">Total:</span>
+                  <span className="text-lg font-bold text-gray-900">${total.toFixed(2)}</span>
+                </div>
               </div>
+              <button
+                onClick={handlePlaceOrder}
+                className="mt-6 w-full py-2 bg-blue-600 text-white font-semibold rounded-lg shadow"
+              >
+                Place Order
+              </button>
             </div>
           </div>
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-800">Payment Method</h2>
-            <div className="mt-4 flex space-x-4">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  value="cod"
-                  checked={paymentMethod === 'cod'}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="mr-2"
-                />
-                Cash on Delivery
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  value="card"
-                  checked={paymentMethod === 'card'}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="mr-2"
-                />
-                Credit/Debit Card
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  value="paypal"
-                  checked={paymentMethod === 'paypal'}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="mr-2"
-                />
-                PayPal
-              </label>
-            </div>
-          </div>
-          <button
-            onClick={handlePlaceOrder}
-            className="mt-8 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700"
-          >
-            Place Order
-          </button>
         </div>
       </div>
     </div>

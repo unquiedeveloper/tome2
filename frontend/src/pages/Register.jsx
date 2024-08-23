@@ -28,7 +28,7 @@ const Register = () => {
     data.append('password', formData.password);
 
     try {
-      const response = await axios.post(`http://localhost:4000/api/v1/user/register`, data, {
+      const response = await axios.post(`https://tome2.onrender.com/api/v1/user/register`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -47,7 +47,7 @@ const Register = () => {
         <aside className="relative text-center flex justify-center items-center lg:col-span-5 lg:h-full xl:col-span-6">
           <img
             alt="Register Image"
-            src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+            src="https://res.cloudinary.com/di0egnojl/image/upload/v1723787786/tasteofmiddleeast/dcce9dd1jgje9vakus69.jpg"
             className="absolute inset-0 h-full p-20 w-full object-cover"
           />
         </aside>

@@ -34,7 +34,7 @@ function Footer() {
             <ul className="mt-8 flex gap-4">
               <li>
               <a
-                href="https://www.facebook.com"
+                href="https://www.facebook.com/share/q2fWm4GLo4yRe1Ut/?mibextid=LQQJ4d"
                 rel="noreferrer"
                 target="_blank"
                 className="text-white transition hover:opacity-75"
@@ -51,12 +51,15 @@ function Footer() {
               </li>
               <li>
               <a
-                href="https://www.instagram.com"
+                href="https://www.instagram.com/to_me_taste_of_middle_east?igsh=MWUxdmIybmZ0YTl2OA%3D%3D&utm_source=qr"
                 rel="noreferrer"
                 target="_blank"
                 className="text-white transition hover:opacity-75"
               >
                 <span className="sr-only">Instagram</span>
+                <a  href='https://www.instagram.com/to_me_taste_of_middle_east?igsh=MWUxdmIybmZ0YTl2OA%3D%3D&utm_source=qr'   >
+
+             
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path
                     fillRule="evenodd"
@@ -64,11 +67,12 @@ function Footer() {
                     clipRule="evenodd"
                   />
                 </svg>
+                </a>
               </a>
               </li>
               <li>
               <a
-                  href="https://www.youtube.com"
+                  href="https://youtu.be/h7W9z8hcdcA?si=2kSRmzHdpMVKDOf5"
                   rel="noreferrer"
                   target="_blank"
                   className="text-white transition hover:opacity-75"

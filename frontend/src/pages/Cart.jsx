@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -11,12 +13,12 @@ function Cart() {
 
       if (!token) {
         alert("Please log in to view your cart.");
-        setLoading(false);
+        navigate("/login");
         return;
       }
 
       try {
-        const response = await axios.get('http://localhost:4000/api/v1/cart/cart-items', {
+        const response = await axios.get('https://tome2.onrender.com/api/v1/cart/cart-items', {
           headers: {
             Authorization: `Bearer ${token}`  
           }
@@ -30,18 +32,19 @@ function Cart() {
     };
 
     fetchCartItems();
-  }, []);
+  }, [navigate]);
 
   const fetchCartItems = async () => {
     const token = localStorage.getItem("token");
 
     if (!token) {
       alert("Please log in to view your cart.");
+      navigate("/login");
       return;
     }
 
     try {
-      const response = await axios.get('http://localhost:4000/api/v1/cart/cart-items', {
+      const response = await axios.get('https://tome2.onrender.com/api/v1/cart/cart-items', {
         headers: {
           Authorization: `Bearer ${token}`  
         }
@@ -54,7 +57,7 @@ function Cart() {
 
   const increaseQuantity = async (itemId) => {
     try {
-      await axios.patch(`http://localhost:4000/api/v1/cart/increase-quantity/${itemId}`, {}, {
+      await axios.patch(`https://tome2.onrender.com/api/v1/cart/increase-quantity/${itemId}`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
@@ -67,7 +70,7 @@ function Cart() {
 
   const decreaseQuantity = async (itemId) => {
     try {
-      await axios.patch(`http://localhost:4000/api/v1/cart/decrease-quantity/${itemId}`, {}, {
+      await axios.patch(`https://tome2.onrender.com/api/v1/cart/decrease-quantity/${itemId}`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
@@ -80,7 +83,7 @@ function Cart() {
 
   const removeFromCart = async (itemId) => {
     try {
-      await axios.delete(`http://localhost:4000/api/v1/cart/remove-from-cart/${itemId}`, {
+      await axios.delete(`https://tome2.onrender.com/api/v1/cart/remove-from-cart/${itemId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
@@ -105,7 +108,7 @@ function Cart() {
   }, 0);
 
   const VAT = subtotal * 0.1;
-  const discount = 50;
+  const discount = 50;  // Adjust this value or fetch it dynamically as needed
   const total = subtotal + VAT - discount;
 
   return (
@@ -181,13 +184,11 @@ function Cart() {
               <span>{total.toFixed(2)}</span>
             </div>
             <div className="mt-4 text-end">
-            <a href='/checkout'>
-            <button className="bg-[#da9858] mt-2 px-6 text-white py-2">
-                Proceed For Payment
-              </button>
-
-            </a>
-
+              <a href='/checkout'>
+                <button className="bg-[#da9858] mt-2 px-6 text-white py-2">
+                  Proceed For Payment
+                </button>
+              </a>
             </div>
           </div>
         </div>

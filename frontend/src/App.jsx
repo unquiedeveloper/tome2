@@ -9,6 +9,9 @@ import Cart from "./pages/Cart"
 import Checkout from "./pages/Checkout"
 import Footer from "./component/Footer";
 import Register from "./pages/Register";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Confirm from "./pages/Confirm";
 export default function App() {
   return (
     <>
@@ -23,6 +26,7 @@ export default function App() {
           <Route path="/cart" element={<Cart/>} />
           <Route path="/checkout" element={<Checkout/>} />
           <Route path="/register" element={<Register/>} />
+          <Route path="/confirm" element={<Confirm />}  />
 
         </Routes>
         <Footer/>
