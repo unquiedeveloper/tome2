@@ -110,7 +110,7 @@ function Checkout() {
         paymentMethod: paymentMethod,
       };
   
-      const response = await axios.post('http://localhost:4000/api/v1/order/checkout', orderData, {
+      const response = await axios.post('https://tome2.onrender.com/api/v1/order/checkout', orderData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -258,12 +258,16 @@ function Checkout() {
                   <span className="text-lg font-bold text-gray-900">${total.toFixed(2)}</span>
                 </div>
               </div>
+              <a href="/confirm">
               <button
                 onClick={handlePlaceOrder}
                 className="mt-6 w-full py-2 bg-blue-600 text-white font-semibold rounded-lg shadow"
               >
                 Place Order
               </button>
+
+              </a>
+
             </div>
           </div>
         </div>

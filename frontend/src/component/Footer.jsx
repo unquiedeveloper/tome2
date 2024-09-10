@@ -125,10 +125,10 @@ function Footer() {
           <div className="sm:flex sm:items-center sm:justify-between">
             <ul className="flex flex-wrap gap-4 text-sm">
               <li>
-                <a href="#" className="text-white transition hover:opacity-75">Terms & Conditions</a>
+                <a href="https://github.com/unquiedeveloper/Privacypolicy/blob/main/readme2.md" className="text-white transition hover:opacity-75">Refund & cancelation policies</a>
               </li>
               <li>
-                <a href="#" className="text-white transition hover:opacity-75">Privacy Policy</a>
+                <a href="https://github.com/unquiedeveloper/Privacypolicy/blob/main/README.md" className="text-white transition hover:opacity-75">Privacy Policy</a>
               </li>
               <li>
                 <a href="#" className="text-white transition hover:opacity-75">Cookies</a>

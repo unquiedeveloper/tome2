@@ -3,8 +3,8 @@ import axios from "axios";
 import v1 from "../assets/2.jpg";
 import video from "../assets/headervideo.mp4";
 import he1 from "../assets/he1.webp";
-import he2 from "../assets/he2.webp"
-import banner from "../assets/banner.jpg"
+import he2 from "../assets/he2.webp";
+import banner from "../assets/banner.jpg";
 import Slider from "react-slick";
 function Home() {
   const [products, setProducts] = useState([]);
@@ -47,7 +47,6 @@ function Home() {
     return categorizedProducts[selectedCategory] || [];
   };
 
-
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -57,11 +56,10 @@ function Home() {
   };
   return (
     <>
-      {/* video */}
       {/* Slider Section */}
-      <Slider {...sliderSettings} className="h-screen">
+      <Slider {...sliderSettings} className="h-300">
         {/* Video Slide */}
-        <div className="relative h-screen w-full overflow-hidden">
+        <div className="relative h-[200px] lg:h-[500px]  w-full overflow-hidden ">
           <video
             src={video}
             autoPlay
@@ -71,7 +69,7 @@ function Home() {
           />
         </div>
         {/* Banner Slide */}
-        <div className="relative h-screen w-full">
+        <div className="relative h-[200px] lg:h-[500px] w-full">
           <img
             src={banner}
             alt="Banner"
@@ -89,10 +87,10 @@ function Home() {
 
       <div className="p-4 ">
         {/* Main Content */}
-        <div className="flex h-screen p-8">
+        <div className="flex flex-col lg:flex-row h-screen p-8 space-y-4 lg:space-y-0 lg:space-x-4">
           {/* Left Side */}
           <div
-            className="w-1/2 p-4 relative"
+            className="w-full lg:w-1/2 p-4 relative"
             style={{ height: "calc(100vh - 2rem)" }}
           >
             <div className="relative w-full h-full">
@@ -104,7 +102,7 @@ function Home() {
               <div className="absolute inset-0 bg-black opacity-30"></div>
               <div className="absolute bottom-4 left-4">
                 <span
-                  className="bg-[#da9858] text-white  text-sm font-bold p-2 px-4 border-2 border-white border-dashed"
+                  className="bg-[#da9858] text-white text-sm font-bold p-2 px-4 border-2 border-white border-dashed"
                   style={{ transform: "rotate(12deg)" }}
                 >
                   Shawarma Rolls
@@ -115,56 +113,50 @@ function Home() {
 
           {/* Right Side */}
           <div
-            className="w-1/2 p-4 flex flex-col space-y-4"
+            className="w-full lg:w-1/2 p-4 flex flex-col space-y-4"
             style={{ height: "calc(100vh - 2rem)" }}
           >
-            <div className="relative w-full h-1/2 flex gap-2">
+            <div className="relative w-full h-[50%] lg:flex lg:gap-2">
               <div className="relative w-full h-full">
                 <img
-                  src= {he2}
+                  src={he2}
                   alt="Skewers"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black opacity-30"></div>
                 <div className="absolute bottom-4 left-4">
                   <span
-                    className="bg-[#da9858] text-white  text-sm font-bold p-2 px-4 border-2 border-white  border-dashed"
+                    className="bg-[#da9858] text-white text-sm font-bold p-2 px-4 border-2 border-white border-dashed"
                     style={{ transform: "rotate(2deg)" }}
                   >
                     Platters
                   </span>
                 </div>
               </div>
-              <div className="flex w-[50%] justify-center">
+              <div className="flex w-full lg:w-[50%] justify-center items-center">
                 <div className="text-center">
-                  <h1 className="font-bold text-3xl mt-6 ml-3">
+                  <h1 className="font-bold text-2xl lg:text-3xl mt-6 ml-3">
                     Taste of Middle East
                   </h1>
-                  <p className="text-lg mt-2">
+                  <p className="text-base lg:text-lg mt-2">
                     Exquisite dishes and impeccable service
                   </p>
                   <div className="text-center mt-4">
-                  <a href="/menu">
-                  <button className="bg-[#da9858] px-6 py-4 rounded-full text-white">
-                      View Menu
-                    </button>
-
-                  </a>
-
+                    <a href="/menu">
+                      <button className="bg-[#da9858] px-6 py-3 lg:py-4 rounded-full text-white">
+                        View Menu
+                      </button>
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="relative w-full h-1/2">
-              <img
-                src= {he1}
-                alt=""
-                className="w-full h-full object-cover"
-              />
+            <div className="relative w-full h-[50%]">
+              <img src={he1} alt="" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black opacity-30"></div>
               <div className="absolute bottom-4 left-4">
                 <span
-                  className="bg-[#da9858] text-white  text-sm font-bold p-2 px-4 border-2 border-white  border-dashed"
+                  className="bg-[#da9858] text-white text-sm font-bold p-2 px-4 border-2 border-white border-dashed"
                   style={{ transform: "rotate(100deg)" }}
                 >
                   Chicken Mandi
@@ -176,11 +168,14 @@ function Home() {
       </div>
 
       {/* About Section */}
-      <div className="p-4 flex gap-2 mt-40 ">
-        <div className="w-[50%] flex pl-12">
+      <div className="p-4 flex flex-col lg:flex-row gap-2 mt-64 lg:mt-40">
+        {/* Left Side */}
+        <div className="w-full lg:w-[50%] flex pl-4 lg:pl-12">
           <div className="mt-8">
-            <h1 className="text-6xl font-semibold ml-2">About</h1>
-            <p className="mt-12">
+            <h1 className="text-4xl lg:text-6xl font-semibold ml-2 mt-48 lg:mt-0">
+              About
+            </h1>
+            <p className="mt-6 lg:mt-12">
               Welcome to <span className="font-bold">Taste of Middle East</span>{" "}
               where the rich flavors and warm hospitality of the Arab world come
               alive in every bite and every detail. Our restaurant is dedicated
@@ -194,192 +189,111 @@ function Home() {
               to rich machboos and fragrant kebabs, every bite is a taste of
               tradition and authenticity.
             </p>
-            <a  href="/about"   >
-
+            <a href="/about">
+              <button className="border-2 bg-[#da9858] text-white border-[#da9858] px-4 py-2 rounded-full mt-6 lg:mt-8">
+                Learn More
+              </button>
             </a>
-            <button className="border-2 bg-[#da9858] text-white border-[#da9858] px-4 py-2 rounded-full mt-8">
-              Learn More
-            </button>
           </div>
         </div>
-        <div className="w-[50%] flex gap-5">
-          <div className="w-[50%] pt-4 ">
+
+        {/* Right Side */}
+        <div className="w-full lg:w-[50%] flex flex-col lg:flex-row gap-5">
+          <div className="w-full lg:w-[50%] pt-4">
             <img
               src="https://res.cloudinary.com/di0egnojl/image/upload/v1723787793/tasteofmiddleeast/h9s9ujqu6oxmi5hjgrtr.jpg"
               alt="About Image 1"
+              className="w-full h-auto object-cover"
             />
           </div>
-          <div className="w-[50%]  pt-20">
-            <img src="https://res.cloudinary.com/di0egnojl/image/upload/v1723787785/tasteofmiddleeast/pohkuo9zbbsruwrbg507.jpg" alt="About Image 2" />
+          <div className="w-full lg:w-[50%] pt-8 lg:pt-20">
+            <img
+              src="https://res.cloudinary.com/di0egnojl/image/upload/v1723787785/tasteofmiddleeast/pohkuo9zbbsruwrbg507.jpg"
+              alt="About Image 2"
+              className="w-full h-auto object-cover"
+            />
           </div>
         </div>
       </div>
 
-{/* Menu Section */}
-<div className="mt-40 mb-40 px-6  border-gray-500">
-  <h1 className="text-4xl font-semibold mb-6 ">Menu</h1>
-  <div className="text-lg mb-8">
-    {Object.keys(categorizedProducts).map((category, index, array) => (
-      <span
-        key={category}
-        className={`cursor-pointer mx-3 ${selectedCategory === category ? "text-yellow-600" : ""}`}
-        onClick={() => handleCategoryClick(category)}
-      >
-        {category}
-        {index < array.length - 1 && " / "}
-      </span>
-    ))}
-    <span
-      className={`cursor-pointer ${selectedCategory === "All" ? "text-yellow-600" : ""}`}
-      onClick={() => handleCategoryClick("All")}
-    >
-      All
-    </span>
-  </div>
-  <div className="grid grid-cols-2 gap-6">
-    <div className="col-span-1">
-      <img
-        src="https://images.pexels.com/photos/6546034/pexels-photo-6546034.jpeg?auto=compress&cs=tinysrgb&w=600"
-        alt="Dish"
-        className="w-full h-[40vh] object-cover"
-      />
-    </div>
-    <div className="col-span-1">
-      {getProductsForCategory().slice(0, 3).map((product) => (
-        <div
-          key={product._id}
-          className="mb-3 border-dashed border-b-2 border-black pb-3"
-        >
-          <div className="flex justify-between items-start">
-            <div>
-              <h2 className="text-base font-semibold">{product.name}</h2>
-              <p className="text-base mt-1">{product.description}</p>
-            </div>
-            <div>
-              <p className="text-lg">₹{product.price}</p>
+      {/* // Menu Section */}
+      <div className="mt-40 mb-40 px-6 border-gray-500">
+        <h1 className="text-4xl font-semibold mb-6">Menu</h1>
+
+        {/* Category Filter */}
+        <div className="text-lg mb-8">
+          {Object.keys(categorizedProducts).map((category, index, array) => (
+            <span
+              key={category}
+              className={`cursor-pointer mx-3 ${
+                selectedCategory === category ? "text-yellow-600" : ""
+              }`}
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+              {index < array.length - 1 && " / "}
+            </span>
+          ))}
+          <span
+            className={`cursor-pointer ${
+              selectedCategory === "All" ? "text-yellow-600" : ""
+            }`}
+            onClick={() => handleCategoryClick("All")}
+          >
+            All
+          </span>
+        </div>
+
+        {/* Products Display */}
+        <div className="grid grid-cols-2 gap-6">
+          <div className="col-span-1">
+            <img
+              src="https://images.pexels.com/photos/6546034/pexels-photo-6546034.jpeg?auto=compress&cs=tinysrgb&w=600"
+              alt="Dish"
+              className="w-full h-[40vh] object-cover"
+            />
+          </div>
+
+          <div className="col-span-1">
+            {getProductsForCategory()
+              .reduce((acc, product) => {
+                if (
+                  !acc.some(
+                    (p) =>
+                      p.category === product.category && p._id === product._id
+                  )
+                ) {
+                  acc.push(product);
+                }
+                return acc;
+              }, [])
+              .slice(0, 3)
+              .map((product) => (
+                <div
+                  key={product._id}
+                  className="mb-3 border-dashed border-b-2 border-black pb-3"
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h2 className="text-base font-semibold">
+                        {product.name}
+                      </h2>
+                      <p className="text-base mt-1">{product.description}</p>
+                    </div>
+                    <div>
+                      <p className="text-lg">₹{product.price}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            <div className="text-right">
+              <a href="/menu" className="hover:text-yellow-600">
+                see more
+              </a>
             </div>
           </div>
         </div>
-      ))}
-      <div className="text-right"> 
-        <a href="/menu" className="hover:text-yellow-600">see more</a>
       </div>
-    </div>
-  </div>
-</div>
-
-      {/* Special Dishes Section  */}
-  
-        {/* <div className="mx-auto max-w-screen-xl px-4 py-2 -mt-32 sm:px-6 sm:py-12 lg:px-8">
-          <header>
-            <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">
-              Speical Dishes{" "}
-            </h2>
-
-            <p className="mt-4 max-w-md text-gray-500">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque
-              praesentium cumque iure dicta incidunt est ipsam, officia dolor
-              fugit natus?
-            </p>
-          </header>
-
-          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <a href="#" className="group relative block overflow-hidden">
-              <img
-                src={v1}
-                alt=""
-                className="h-full w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
-              />
-
-              <div className="relative border border-gray-100 bg-white p-6">
-                <h3 className="mt-4 text-lg font-medium text-gray-900">
-                  Robot Toy
-                </h3>
-
-                <p className="mt-1.5 text-sm text-gray-700">$14.99</p>
-
-                <form className="mt-4">
-                  <button className="block w-full rounded bg-[#da9858] text-white  p-4 text-sm font-medium transition hover:scale-105">
-                    Add to Cart
-                  </button>
-                </form>
-              </div>
-            </a>
-
-            <li>
-              <a href="#" className="group relative block overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1599481238640-4c1288750d7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80"
-                  alt=""
-                  className="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
-                />
-
-                <div className="relative border border-gray-100 bg-white p-6">
-                  <h3 className="mt-4 text-lg font-medium text-gray-900">
-                    Robot Toy
-                  </h3>
-
-                  <p className="mt-1.5 text-sm text-gray-700">$14.99</p>
-
-                  <form className="mt-4">
-                    <button className="block w-full rounded bg-[#da9858] text-white p-4 text-sm font-medium transition hover:scale-105">
-                      Add to Cart
-                    </button>
-                  </form>
-                </div>
-              </a>
-            </li>
-
-            <li>
-              <a href="#" className="group relative block overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1599481238640-4c1288750d7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80"
-                  alt=""
-                  className="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
-                />
-
-                <div className="relative border border-gray-100 bg-white p-6">
-                  <h3 className="mt-4 text-lg font-medium text-gray-900">
-                    Robot Toy
-                  </h3>
-
-                  <p className="mt-1.5 text-sm text-gray-700">$14.99</p>
-
-                  <form className="mt-4">
-                    <button className="block w-full rounded bg-[#da9858] text-white p-4 text-sm font-medium transition hover:scale-105">
-                      Add to Cart
-                    </button>
-                  </form>
-                </div>
-              </a>
-            </li>
-
-            <li>
-              <a href="#" className="group relative block overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1599481238640-4c1288750d7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80"
-                  alt=""
-                  className="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
-                />
-
-                <div className="relative border border-gray-100 bg-white p-6">
-                  <h3 className="mt-4 text-lg font-medium text-gray-900">
-                    Robot Toy
-                  </h3>
-
-                  <p className="mt-1.5 text-sm text-gray-700">$14.99</p>
-
-                  <form className="mt-4">
-                    <button className="block w-full rounded bg-[#da9858] text-white p-4 text-sm font-medium transition hover:scale-105">
-                      Add to Cart
-                    </button>
-                  </form>
-                </div>
-              </a>
-            </li>
-          </ul>
-        </div> */}
- 
     </>
   );
 }
